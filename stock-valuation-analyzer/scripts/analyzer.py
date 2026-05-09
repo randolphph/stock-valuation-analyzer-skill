@@ -89,6 +89,20 @@ def calculate_valuation(data: dict, net_cash_result: dict) -> dict:
     if op_cashflow is not None and net_profit > 0:
         result["现金收益比"] = round(op_cashflow / net_profit * 100, 2)
 
+    # Dividend metrics
+    total_dividend = data.get("现金分红总额", None)
+    dps = data.get("每股分红", None)
+    if total_dividend is None and dps is not None and total_shares > 0:
+        total_dividend = dps * total_shares
+    if total_dividend is not None:
+        result["现金分红总额"] = round(total_dividend, 2)
+        if market_cap > 0:
+            result["股息率"] = round(total_dividend / market_cap * 100, 2)
+        if net_profit > 0:
+            result["分红比例"] = round(total_dividend / net_profit * 100, 2)
+        if total_shares > 0:
+            result["每股分红"] = round(total_dividend / total_shares, 2)
+
     return result
 
 
@@ -114,6 +128,16 @@ def analyze(data: dict) -> dict:
             flags.append("🔴 现金收益比低于70%，利润质量存疑")
         elif cash_conv > 120:
             flags.append("🟢 现金收益比高于120%，利润质量优异")
+
+    div_yield = valuation_result.get("股息率", None)
+    if div_yield is not None and div_yield >= 4:
+        flags.append("🟢 股息率≥4%，现金回报可观")
+    payout = valuation_result.get("分红比例", None)
+    if payout is not None:
+        if payout >= 70:
+            flags.append("💸 分红比例≥70%，公司倾向高比例分红")
+        elif payout < 20:
+            flags.append("📉 分红比例<20%，公司留存比例较高")
 
     return {
         "company": data.get("公司名称", "未知"),

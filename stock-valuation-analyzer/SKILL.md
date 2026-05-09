@@ -67,6 +67,9 @@ Also calculate and present:
 - **每股净现金**: 净现金 / 总股本
 - **经营性现金流/净利润**: 经营活动现金流净额 / 归母净利润 (cash conversion quality)
 - **净现金变化**: compare vs prior year if data available
+- **股息率** (dividend yield): 现金分红总额 / 总市值 × 100%（也可由 每股分红 / 股价 推得）
+- **分红比例** (dividend payout ratio): 现金分红总额 / 归母净利润 × 100%
+- **每股分红**: 现金分红总额 / 总股本
 
 ## Input Handling
 
@@ -102,6 +105,8 @@ The user may paste key numbers directly. Parse them and proceed with the calcula
 | Total shares | 总股本 | ✅ |
 | Current price or market cap | 股价/总市值 | ✅ |
 | Operating cash flow | 经营活动现金流净额 | Optional |
+| Total cash dividend | 现金分红总额 | Optional (用于股息率/分红比例) |
+| Dividend per share | 每股分红 | Optional (替代现金分红总额) |
 
 ## Output
 
@@ -114,6 +119,7 @@ A clean dashboard-style visual showing:
 - Net cash position (absolute and per-share)
 - Cash as % of market cap
 - Cash conversion ratio (if operating cash flow provided)
+- 股息率 与 分红比例（若提供分红数据）— 同时展示每股分红
 
 ### 2. Net Cash Waterfall (Visualizer)
 A waterfall-style chart showing how net cash is built up:
@@ -128,6 +134,7 @@ After the visuals, provide brief prose commentary:
 - Cash conversion quality assessment
 - Any red flags (e.g., large gap between profit and operating cash flow, unusual receivables)
 - If net cash is negative, note that the business is actually more expensive than headline PE suggests
+- 分红观察：股息率水平、分红比例（高分红 vs 留存再投资），结合净现金判断是否具备持续分红能力
 
 ### Formatting notes
 - All monetary values in 亿元 (hundred millions RMB) for readability
@@ -155,6 +162,7 @@ After the visuals, provide brief prose commentary:
 - 归母净利润: 862亿
 - 总股本: 12.56亿股
 - 当前股价: 1500元
+- 现金分红总额: 647亿
 
 **Calculation:**
 1. 现金类资产 = 763 + 711 = 1474亿
@@ -165,5 +173,8 @@ After the visuals, provide brief prose commentary:
 6. 真实PE = (18840 - 1115.3) / 862 = 20.6x
 7. 现金占市值比 = 1115.3 / 18840 = 5.9%
 8. 每股净现金 = 1115.3 / 12.56 = 88.8元
+9. 股息率 = 647 / 18840 = 3.43%
+10. 分红比例 = 647 / 862 = 75.06%
+11. 每股分红 = 647 / 12.56 = 51.51元
 
 (Note: these are illustrative numbers, not actual figures)
